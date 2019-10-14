@@ -1,6 +1,7 @@
 # Hyperledger Fabric Study
 
 멘토: 이명철 (한국 IBM 상무)
+
 멘티: 조상연, 민체화
 
 
@@ -59,7 +60,6 @@ Reference
 3.	https://hyperledger-fabric.readthedocs.io/en/release-1.4/build_network.html 
 
 
----
 
 
 ## Chaincode 관련 파일들
@@ -208,7 +208,6 @@ func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string
 }
 ```
 
----
 
 ## Chaincode Install (GO)
 
