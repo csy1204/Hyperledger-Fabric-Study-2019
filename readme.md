@@ -9,7 +9,7 @@
 Ubuntu 18.04 LTS에서 시작
 
 1. Prerequisites
-```
+```bash
 sudo apt-get install curl
 sudo apt-get install -y docker docker-compose
 sudo groupadd docker
@@ -18,8 +18,8 @@ curl -O https://dl.google.com/go/go1.12.3.linux-amd64.tar.gz
 tar xvf go1.12.3.linux-amd64.tar.gz
 ```
 
-```
-vi .bashrc (만약 vi 없을 시 sudo apt-get install vi)
+```bash
+vi .bashrc #(만약 vi 없을 시 sudo apt-get install vi)
 ```
 
 vi에서 
@@ -36,7 +36,7 @@ esc키 (모드 전환)
 :wq 입력
 Enter키 (저장 완료 및 나가기)
 
-```
+```bash
 source ~/.bashrc
 echo $GOPATH
 echo $PATH
@@ -45,7 +45,7 @@ sudo apt-get install -y git
 ```
 
 1. Fabric Docker Image & First Netwrok
-```
+```bash
 curl -sSL http://bit.ly/2ysbOFE | bash -s
 ls (fabric-samples 확인)
 cd fabric-samples/first-network/
@@ -168,9 +168,17 @@ func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string
 	if Bvalbytes == nil {
 		return shim.Error("Entity not found")
 	}
-	Bval, _ = strconv.Atoi(string(Bvalbytes))
-	Cvalbytes, err := stub.GetState(C)
-	Cval, _ = strconv.Atoi(string(Cvalbytes))
+    Bval, _ = strconv.Atoi(string(Bvalbytes))
+    
+    Cvalbytes, err := stub.GetState(C)
+    if err != nil {
+		return shim.Error("Failed to get state")
+	}
+	if Cvalbytes == nil {
+		return shim.Error("Entity not found")
+	}
+    Cval, _ = strconv.Atoi(string(Cvalbytes))
+    
 	// Perform the execution
 	X, err = strconv.Atoi(args[3])
 	if err != nil {
@@ -209,7 +217,7 @@ cli는 docker container로 구동 중이기 때문에 이 컨테이너 안으로
 
 ### Execute CLI Bash
 Cli환경으로 들어가는 코드
-```
+```bash
 docker exec -it cli bash
 ```
 
@@ -220,7 +228,7 @@ docker exec -it cli bash
  2. 경로를 `$GOPATH/src` 가 앞에 있다고 상정한다.
  3. `$PEER`, `$ORG`로 설치할 피어와 Org를 설정할 수 있다.
 
-```
+```bash
 peer chaincode install\
  -n mycc\
  -v 1.3\
@@ -236,7 +244,7 @@ ca file 경로는 utils.sh의 상단의 변수 설정에서 ORDERER_CA를 확인
 
 원래 -P "AND ('Org1MSP.peer','Org2MSP.peer')" 이지만 편의상 AND를 OR로 바꾸어 둘 중 하나의 허가만 받아도 되도록 하였다.
 
-```
+```bash
 peer chaincode instantiate\
  -o orderer.example.com:7050\
  --tls "true"\
@@ -249,9 +257,9 @@ peer chaincode instantiate\
 ```
 
 
-### (After Instantiate) Chaincode Upgrade
-이미 Instantiate를 한 체인코드를 업그레이드 하는 경우 다시 install를 수행하고 그다음 upgrade를 수행하면 된다. 코드는 Instantiate와 크게 다르지 않다. (upgrade 명령어와 버젼명만 다름)
-```
+### (Instantiate를 이미 한 경우) Chaincode Upgrade
+이미 Instantiate를 한 체인코드를 업그레이드 하는 경우 **다시 install를 수행**하고 그다음 upgrade를 수행하면 된다. 코드는 Instantiate와 크게 다르지 않다. (upgrade 명령어와 버젼명만 다름)
+```bash
 peer chaincode upgrade\
  -o orderer.example.com:7050\
  -–tls "true"\
@@ -265,7 +273,7 @@ peer chaincode upgrade\
 
 ### Chaincode Invoke
 체인코드를 실행하는 명령어로 체인코드에 명시된 input값을 순서대로 넣어주어야한다. 마찬가지로 tls로 실행한다.
-```
+```bash
 peer chaincode invoke\
  -o orderer.example.com:7050\
  --tls "true"\

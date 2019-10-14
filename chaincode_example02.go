@@ -37,7 +37,7 @@ type SimpleChaincode struct {
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("ex02 Init")
 	_, args := stub.GetFunctionAndParameters()
-	var A, B, C string    // Entities
+	var A, B, C string       // Entities
 	var Aval, Bval, Cval int // Asset holdings
 	var err error
 
@@ -100,10 +100,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 // Transaction makes payment of X units from A to B
 func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	var A, B, C string    // Entities
+	var A, B, C string       // Entities
 	var Aval, Bval, Cval int // Asset holdings
-	var X int          // Transaction value
-	var Y int = 5 // Transaction Fee
+	var X int                // Transaction value
+	var Y int = 5            // Transaction Fee
 	var err error
 
 	if len(args) != 4 {
@@ -132,8 +132,16 @@ func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string
 		return shim.Error("Entity not found")
 	}
 	Bval, _ = strconv.Atoi(string(Bvalbytes))
+
 	Cvalbytes, err := stub.GetState(C)
+	if err != nil {
+		return shim.Error("Failed to get state")
+	}
+	if Cvalbytes == nil {
+		return shim.Error("Entity not found")
+	}
 	Cval, _ = strconv.Atoi(string(Cvalbytes))
+
 	// Perform the execution
 	X, err = strconv.Atoi(args[3])
 	if err != nil {
