@@ -1,9 +1,5 @@
 # Hyperledger Fabric Study
 
-멘토: 이명철 (한국 IBM 상무)
-
-멘티: 조상연, 민체화
-
 
 ## Installation Guide
 
